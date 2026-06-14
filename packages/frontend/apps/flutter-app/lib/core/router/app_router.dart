@@ -20,6 +20,7 @@ import '../../features/settings/presentation/pages/appearance_page.dart';
 import '../../features/settings/presentation/pages/user_profile_page.dart';
 import '../../features/settings/presentation/pages/subscription_page.dart';
 import '../../features/settings/presentation/pages/about_page.dart';
+import '../../features/ai/presentation/pages/ai_chat_page.dart';
 import '../../shared/widgets/navigation/workspace_shell.dart';
 import 'route_names.dart';
 
@@ -90,6 +91,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/settings/about',
         name: 'settingsAbout',
         builder: (context, state) => const AboutPage(),
+      ),
+      GoRoute(
+        path: '/workspace/:workspaceId/ai',
+        name: 'workspaceAi',
+        builder: (context, state) => AiChatPage(workspaceId: state.pathParameters['workspaceId']!),
       ),
       ShellRoute(
         builder: (context, state, child) {

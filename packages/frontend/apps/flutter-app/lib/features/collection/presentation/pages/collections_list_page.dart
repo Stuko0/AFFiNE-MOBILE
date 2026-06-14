@@ -20,15 +20,26 @@ class CollectionsListPage extends ConsumerWidget {
       appBar: AppBar(title: const Text('Collections')),
       body: async.when(
         loading: () => const LoadingWidget(),
-        error: (e, _) => ErrorDisplay(message: e.toString(), onRetry: () => ref.invalidate(collectionsListProvider(workspaceId))),
+        error: (e, _) => ErrorDisplay(
+          message: e.toString(),
+          onRetry: () => ref.invalidate(collectionsListProvider(workspaceId)),
+        ),
         data: (list) => list.isEmpty
             ? const EmptyState(icon: Icons.collections_bookmark_outlined, title: 'No collections', subtitle: 'Create a collection to organize your docs')
-            : ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: list.length,
-                itemBuilder: (_, i) => _CollectionCard(
-                  collection: list[i],
-                  onTap: () => context.go('/workspace/$workspaceId/collection/${list[i].id}'),
+            : RefreshIndicator(
+                color: AppColors.primary,
+                onRefresh: () async {
+                  ref.invalidate(collectionsListProvider(workspaceId));
+                  await ref.read(collectionsListProvider(workspaceId).future);
+                },
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(16),
+                  itemCount: list.length,
+                  itemBuilder: (_, i) => _CollectionCard(
+                    collection: list[i],
+                    onTap: () => context.go('/workspace/$workspaceId/collection/${list[i].id}'),
+                  ),
                 ),
               ),
       ),
