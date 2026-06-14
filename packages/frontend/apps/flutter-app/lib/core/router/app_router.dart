@@ -15,6 +15,11 @@ import '../../features/tag/presentation/pages/tags_list_page.dart';
 import '../../features/tag/presentation/pages/tag_detail_page.dart';
 import '../../features/journal/presentation/pages/journals_page.dart';
 import '../../features/search/presentation/pages/search_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../features/settings/presentation/pages/appearance_page.dart';
+import '../../features/settings/presentation/pages/user_profile_page.dart';
+import '../../features/settings/presentation/pages/subscription_page.dart';
+import '../../features/settings/presentation/pages/about_page.dart';
 import '../../shared/widgets/navigation/workspace_shell.dart';
 import 'route_names.dart';
 
@@ -61,6 +66,31 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'workspaceList',
         builder: (context, state) => const WorkspaceListPage(),
       ),
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) => const SettingsPage(),
+      ),
+      GoRoute(
+        path: '/settings/appearance',
+        name: 'settingsAppearance',
+        builder: (context, state) => const AppearancePage(),
+      ),
+      GoRoute(
+        path: '/settings/profile',
+        name: 'settingsProfile',
+        builder: (context, state) => const UserProfilePage(),
+      ),
+      GoRoute(
+        path: '/settings/subscription',
+        name: 'settingsSubscription',
+        builder: (context, state) => const SubscriptionPage(),
+      ),
+      GoRoute(
+        path: '/settings/about',
+        name: 'settingsAbout',
+        builder: (context, state) => const AboutPage(),
+      ),
       ShellRoute(
         builder: (context, state, child) {
           final wsId = state.pathParameters['workspaceId'] ?? '';
@@ -70,37 +100,27 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/workspace/:workspaceId/home',
             name: 'workspaceHome',
-            builder: (context, state) => WorkspaceHomePage(
-              workspaceId: state.pathParameters['workspaceId']!,
-            ),
+            builder: (context, state) => WorkspaceHomePage(workspaceId: state.pathParameters['workspaceId']!),
           ),
           GoRoute(
             path: '/workspace/:workspaceId/all',
             name: 'workspaceAllDocs',
-            builder: (context, state) => AllDocsPage(
-              workspaceId: state.pathParameters['workspaceId']!,
-            ),
+            builder: (context, state) => AllDocsPage(workspaceId: state.pathParameters['workspaceId']!),
           ),
           GoRoute(
             path: '/workspace/:workspaceId/search',
             name: 'workspaceSearch',
-            builder: (context, state) => SearchPage(
-              workspaceId: state.pathParameters['workspaceId']!,
-            ),
+            builder: (context, state) => SearchPage(workspaceId: state.pathParameters['workspaceId']!),
           ),
           GoRoute(
             path: '/workspace/:workspaceId/journals',
             name: 'workspaceJournals',
-            builder: (context, state) => JournalsPage(
-              workspaceId: state.pathParameters['workspaceId']!,
-            ),
+            builder: (context, state) => JournalsPage(workspaceId: state.pathParameters['workspaceId']!),
           ),
           GoRoute(
             path: '/workspace/:workspaceId/collections',
             name: 'workspaceCollections',
-            builder: (context, state) => CollectionsListPage(
-              workspaceId: state.pathParameters['workspaceId']!,
-            ),
+            builder: (context, state) => CollectionsListPage(workspaceId: state.pathParameters['workspaceId']!),
           ),
           GoRoute(
             path: '/workspace/:workspaceId/collection/:collectionId',
@@ -113,9 +133,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/workspace/:workspaceId/tags',
             name: 'workspaceTags',
-            builder: (context, state) => TagsListPage(
-              workspaceId: state.pathParameters['workspaceId']!,
-            ),
+            builder: (context, state) => TagsListPage(workspaceId: state.pathParameters['workspaceId']!),
           ),
           GoRoute(
             path: '/workspace/:workspaceId/tag/:tagId',
