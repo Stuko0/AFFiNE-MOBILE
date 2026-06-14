@@ -10,11 +10,7 @@ import '../widgets/doc_card_widget.dart';
 
 class AllDocsPage extends ConsumerWidget {
   final String workspaceId;
-
-  const AllDocsPage({
-    super.key,
-    required this.workspaceId,
-  });
+  const AllDocsPage({super.key, required this.workspaceId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,9 +18,7 @@ class AllDocsPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('All Documents'),
-      ),
+      appBar: AppBar(title: const Text('All Documents')),
       body: docsAsync.when(
         loading: () => const LoadingWidget(message: 'Loading documents...'),
         error: (error, stack) => ErrorDisplay(
@@ -39,18 +33,24 @@ class AllDocsPage extends ConsumerWidget {
               subtitle: 'Create your first document to get started',
             );
           }
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: documents.length,
-            itemBuilder: (context, index) {
-              final doc = documents[index];
-              return DocCardWidget(
-                document: doc,
-                onTap: () {
-                  context.go('/workspace/$workspaceId/doc/${doc.id}');
-                },
-              );
+          return RefreshIndicator(
+            color: AppColors.primary,
+            onRefresh: () async {
+              ref.invalidate(documentListProvider(workspaceId));
+              await ref.read(documentListProvider(workspaceId).future);
             },
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(16),
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                final doc = documents[index];
+                return DocCardWidget(
+                  document: doc,
+                  onTap: () => context.go('/workspace/$workspaceId/doc/${doc.id}'),
+                );
+              },
+            ),
           );
         },
       ),
